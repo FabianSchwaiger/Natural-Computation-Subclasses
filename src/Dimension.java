@@ -30,6 +30,4 @@ public class Dimension {
     public double getMaxY() {
         return maxY;
     }
-
-
 }

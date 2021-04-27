@@ -20,13 +20,13 @@ public class Main {
         */
 
         PointDataSetManager pointDataSetManager = new PointDataSetManager(numSets, pointsPerSet, dim);
-        // pointDataSetManager.stringOfAllDataSets();
-
-
-        // erster Parameter sind Dimensionen des Netzes (#Input, #H1, #H2?, #Output)
-        NeuralNet net = NetFactory.createFeedForward(new int[]{pointsPerSet*2, 20, 3}, false, new boone.map.Function.Sigmoid(), new RpropTrainer(), null, null);
+        // pointDataSetManager.printAllDataSets();
 
         PointDataSetValidator validator = new BasicPointDataSetValidator();
+
+        // erster Parameter sind Dimensionen des Netzes (#Input, #H1, #H2?, #Output)
+        NeuralNet net = NetFactory.createFeedForward(new int[]{pointsPerSet*2, 20, validator.supportedNumberOfNeurons()}, false, new boone.map.Function.Sigmoid(), new RpropTrainer(), null, null);
+
         PatternSet patterns = new PatternSet();
         for (PointDataSet dataSet : pointDataSetManager.getAllDataSets()) {
             patterns.getInputs().add(Conversion.asList( dataSet.pointsToDoubleArray1D()));
