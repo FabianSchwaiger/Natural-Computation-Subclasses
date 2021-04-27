@@ -23,4 +23,9 @@ public class BasicPointDataSetValidator implements PointDataSetValidator{
         else
             return new double[] {0, 0, 0};
     }
+
+    @Override
+    public int supportedNumberOfNeurons() {
+        return 3;
+    }
 }
