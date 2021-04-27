@@ -97,13 +97,10 @@ public class PointDataSet {
      */
     public boolean isCorner() {
         switch (positionTag) {
-            case CORNER_BL:
-            case CORNER_BR:
-            case CORNER_TL:
-            case CORNER_TR:
+            case CORNER_BL, CORNER_BR, CORNER_TL, CORNER_TR -> {
                 return true;
-            default:
-                return false;
+            }
+            default -> { return false; }
         }
     }
 
@@ -113,13 +110,10 @@ public class PointDataSet {
      */
     public boolean isSide() {
         switch (positionTag) {
-            case SIDE_BOTTOM:
-            case SIDE_LEFT:
-            case SIDE_RIGHT:
-            case SIDE_TOP:
+            case SIDE_BOTTOM , SIDE_LEFT , SIDE_RIGHT , SIDE_TOP -> {
                 return true;
-            default:
-                return false;
+            }
+            default -> { return false; }
         }
     }
 
@@ -129,11 +123,10 @@ public class PointDataSet {
      */
     public boolean isDiag() {
         switch (positionTag) {
-            case DIAG_FIRST:
-            case DIAG_SEC:
+            case DIAG_FIRST, DIAG_SEC -> {
                 return true;
-            default:
-                return false;
+            }
+            default -> { return false; }
         }
     }
 
