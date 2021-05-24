@@ -1,4 +1,4 @@
-public class BasicPointDataSetValidator implements PointDataSetValidator {
+public class BasicHiddenPointDataSetValidator implements PointDataSetValidator {
 
 
     public double[] validatePointDataset(PointDataSet pointDataSet) {

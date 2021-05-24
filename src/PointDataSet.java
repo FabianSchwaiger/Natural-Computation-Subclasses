@@ -1,8 +1,8 @@
 
 
 public class PointDataSet {
-    private Point[] points;
-    private Dimension dim;
+    private final Point[] points;
+    private final Dimension dim;
     private final PositionTag positionTag;
 
     /**
@@ -48,8 +48,8 @@ public class PointDataSet {
     public String pointsString(){
         StringBuilder pointsBuilder = new StringBuilder(positionTag.toString() + "\n");
 
-        for(int i = 0; i < points.length; i++) {
-            pointsBuilder.append(points[i])
+        for (Point point : points) {
+            pointsBuilder.append(point)
                     .append("\n");
         }
 
@@ -176,7 +176,7 @@ public class PointDataSet {
         double minY = dim.getMinY();
         double maxY = dim.getMaxY();
 
-        final double tolerance = 0.25;
+        final double tolerance = 0.1;
 
         final double minXNew = Math.abs(minX - maxX) * (1-tolerance) + minX;
         final double maxXNew = (Math.abs(minX + maxX)) * tolerance + minX;

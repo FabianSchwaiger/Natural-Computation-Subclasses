@@ -1,7 +1,7 @@
 public class PointDataSetManager {
-    private PointDataSet[] pointDataSets;
-    private int pointsPerSet;
-    private Dimension dim;
+    private final PointDataSet[] pointDataSets;
+    private final int pointsPerSet;
+    private final Dimension dim;
 
     public PointDataSetManager(int numSets, int pointsPerSet, Dimension dim) {
         pointDataSets = new PointDataSet[numSets];
@@ -10,7 +10,7 @@ public class PointDataSetManager {
         generateDataSets();
     }
 
-    /*
+    /**
         generates datasets containing all of the 11 positions (corners, sides, diagonals, random)
         splits the positions almost evenly expect for the random position, which is mor common depending on the number of datasets
      */
