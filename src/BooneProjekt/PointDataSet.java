@@ -1,4 +1,4 @@
-
+package BooneProjekt;
 
 public class PointDataSet {
     private final Point[] points;
@@ -139,8 +139,8 @@ public class PointDataSet {
     }
 
     /**
-     * creates all the points in the specified Dimension dependent on the positioning
-     * for the diagonals, the specific calculation of the coordinates happens in the Point class
+     * creates all the points in the specified BooneProjekt.Dimension dependent on the positioning
+     * for the diagonals, the specific calculation of the coordinates happens in the BooneProjekt.Point class
      * otherwise the dimH describes the subspace, where the points can be placed
      */
     private void generatePoints() {

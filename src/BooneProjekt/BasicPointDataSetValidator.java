@@ -1,8 +1,10 @@
+package BooneProjekt;
+
 public class BasicPointDataSetValidator implements PointDataSetValidator {
 
 
     public double[] validatePointDataset(PointDataSet pointDataSet) {
-        // PointDataSet.PositionTag tag = pointDataSet.getPositionTag();   // Can be used for advanced Subclasses
+        // BooneProjekt.PointDataSet.PositionTag tag = pointDataSet.getPositionTag();   // Can be used for advanced Subclasses
 
         /*
         Very Basic Approach

@@ -1,3 +1,5 @@
+package BooneProjekt;
+
 public class Point {
     private double x, y;
     private static final double tolerance = 0.1;

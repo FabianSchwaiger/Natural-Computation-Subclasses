@@ -1,3 +1,5 @@
+package BooneProjekt;
+
 public class Dimension {
     private double minX, maxX, minY, maxY;
 

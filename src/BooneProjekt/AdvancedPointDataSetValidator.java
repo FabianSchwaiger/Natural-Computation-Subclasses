@@ -1,4 +1,6 @@
-public class AdvancedPointDataSetValidator implements PointDataSetValidator{
+package BooneProjekt;
+
+public class AdvancedPointDataSetValidator implements PointDataSetValidator {
 
     @Override
     public double[] validatePointDataset(PointDataSet pointDataSet) {
@@ -26,3 +28,22 @@ public class AdvancedPointDataSetValidator implements PointDataSetValidator{
     }
 }
 
+
+/*
+Datenset
+Ziel
+1,   0    x x x
+
+Wert
+0.6, 0.5, x x x
+
+neues Ziel:
+0.7, 0.4, x x x
+
+
+
+0.5, 0.6, x x x
+
+for(int index = 0 ....)
+  patterns.getTargets().add(index, {0.7, 0.4, x x x});
+*/

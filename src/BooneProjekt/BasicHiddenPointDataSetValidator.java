@@ -1,8 +1,10 @@
+package BooneProjekt;
+
 public class BasicHiddenPointDataSetValidator implements PointDataSetValidator {
 
 
     public double[] validatePointDataset(PointDataSet pointDataSet) {
-        // PointDataSet.PositionTag tag = pointDataSet.getPositionTag();   // Can be used for advanced Subclasses
+        // BooneProjekt.PointDataSet.PositionTag tag = pointDataSet.getPositionTag();   // Can be used for advanced Subclasses
 
         /*
         Very Basic Approach
@@ -15,17 +17,17 @@ public class BasicHiddenPointDataSetValidator implements PointDataSetValidator {
          */
 
         if(pointDataSet.isCorner())
-            return new double[] {1, 0, 0};
+            return new double[] {1, 0, 0, 0};
         else if (pointDataSet.isSide())
-            return new double[] {0, 1, 0};
+            return new double[] {0, 1, 0, 0};
         else if (pointDataSet.isDiag())
-            return new double[] {0, 0, 1};
+            return new double[] {0, 0, 1, 0};
         else
-            return new double[] {0, 0, 0};
+            return new double[] {0, 0, 0, 1};
     }
 
 
     public int supportedNumberOfNeurons() {
-        return 3;
+        return 4;
     }
 }

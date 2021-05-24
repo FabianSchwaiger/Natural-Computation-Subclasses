@@ -1,3 +1,5 @@
+package BooneProjekt;
+
 public class PointDataSetManager {
     private final PointDataSet[] pointDataSets;
     private final int pointsPerSet;

@@ -1,3 +1,5 @@
+package BooneProjekt;
+
 public interface PointDataSetValidator {
     /**
      *
