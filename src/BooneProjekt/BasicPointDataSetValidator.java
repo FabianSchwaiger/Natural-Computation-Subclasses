@@ -26,6 +26,20 @@ public class BasicPointDataSetValidator implements PointDataSetValidator {
             return new double[] {0, 0, 0};
     }
 
+    @Override
+    public int validatePointDatasetTargets(PointDataSet pointDataSet) {
+        // PointDataSet.PositionTag tag = pointDataSet.getPositionTag();   // Can be used for advanced Subclasses
+
+        if(pointDataSet.isCorner())
+            return 0;
+        else if (pointDataSet.isSide())
+            return 1;
+        else if (pointDataSet.isDiag())
+            return 2;
+        else
+            return -1;
+    }
+
 
     public int supportedNumberOfNeurons() {
         return 3;

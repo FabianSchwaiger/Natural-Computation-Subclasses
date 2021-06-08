@@ -23,6 +23,11 @@ public class AdvancedHiddenPointDataSetValidator implements PointDataSetValidato
     }
 
     @Override
+    public int validatePointDatasetTargets(PointDataSet pointDataSet) {
+        return 0;
+    }
+
+    @Override
     public int supportedNumberOfNeurons() {
         return 11;
     }

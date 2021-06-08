@@ -8,6 +8,8 @@ public interface PointDataSetValidator {
      */
     double[] validatePointDataset(PointDataSet pointDataSet);
 
+    int validatePointDatasetTargets(PointDataSet pointDataSet);
+
     /**
      * @return returns the number of supported output neurons
      */

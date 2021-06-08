@@ -26,6 +26,11 @@ public class BasicHiddenPointDataSetValidator implements PointDataSetValidator {
             return new double[] {0, 0, 0, 1};
     }
 
+    @Override
+    public int validatePointDatasetTargets(PointDataSet pointDataSet) {
+        return 0;
+    }
+
 
     public int supportedNumberOfNeurons() {
         return 4;
