@@ -10,83 +10,113 @@ import boone.training.RpropTrainer;
 import boone.util.Conversion;
 
 import java.io.File;
-
+import java.io.IOException;
 
 
 public class Main {
     static int ok;
-
+    static int hidden = 0;
     public static void main(String[] args) throws Exception {
-        Dimension dim = new Dimension(0, 1, 0, 1);
-        int pointsPerSet = 10;
+
         int numSets = 2500;
         int numTestSets = 500;
-        int runs = 1;
+        int runs = 10;
         long time = 0;
 
         PointDataSetManager pointDataSetManager;
         PointDataSetManager pointDataSetManagerTest;
+        PointDataSetValidator validator;
+
+
+        //pointDataSetManager = generateAndSave(new BasicHiddenPointDataSetValidator(), new File("Training"), numSets);
+        //pointDataSetManagerTest = generateAndSave(new BasicHiddenPointDataSetValidator(), new File("TestTraining"), numTestSets);
+
+        // pointDataSetManager = new PointDataSetManager(numSets);
+
+        /*
+        ok = 0;
+        pointDataSetManager = generateAndSave(true, new BasicHiddenPointDataSetValidator(), new File("HiddenTraining"), numSets);
+        pointDataSetManagerTest = generateAndSave(true, new BasicHiddenPointDataSetValidator(), new File("HiddenTest"), numTestSets);
+        trainNet(pointDataSetManager, pointDataSetManagerTest, new AdvancedPointDataSetValidator());
+
+        ok = 0;
+        pointDataSetManager = generateAndSave(false, new BasicPointDataSetValidator(), new File("NoHiddenTraining"), numSets);
+        pointDataSetManagerTest = generateAndSave(false, new BasicPointDataSetValidator(), new File("NoHiddenTest"), numTestSets);
+        trainNet(pointDataSetManager, pointDataSetManagerTest, new AdvancedPointDataSetValidator());
+        */
+
         // pointDataSetManager.printAllDataSets();
 
 
-            pointDataSetManager = new PointDataSetManager(numSets, pointsPerSet, dim);
-            pointDataSetManagerTest = new PointDataSetManager(numTestSets, pointsPerSet, dim);
+            //pointDataSetManager = new PointDataSetManager(numSets, pointsPerSet, dim, true);
+            //pointDataSetManagerTest = new PointDataSetManager(numTestSets, pointsPerSet, dim, true);
 
-            time = System.currentTimeMillis();
+            //time = System.currentTimeMillis();
             //trainNet(pointDataSetManager, pointDataSetManagerTest, pointsPerSet, new BasicPointDataSetValidator());
             //trainNet(pointDataSetManager, pointDataSetManagerTest, pointsPerSet, new BasicHiddenPointDataSetValidator());
             //System.out.println("time needed: " + (System.currentTimeMillis() - time) + "ms");
 
             //System.out.println();
 
-            time = System.currentTimeMillis();
+            //time = System.currentTimeMillis();
             //trainNet(pointDataSetManager, pointDataSetManagerTest, pointsPerSet, new AdvancedPointDataSetValidator());
             //trainNet(pointDataSetManager, pointDataSetManagerTest, pointsPerSet, new AdvancedHiddenPointDataSetValidator());
             //System.out.println("time needed: " + (System.currentTimeMillis() - time) + "ms");
 
-        ok = 0;
-        for(int i = 0; i < runs; i++) {
-            pointDataSetManager = new PointDataSetManager(numSets, pointsPerSet, dim);
-            pointDataSetManagerTest = new PointDataSetManager(numTestSets, pointsPerSet, dim);
-            trainNet(pointDataSetManager, pointDataSetManagerTest, pointsPerSet, new BasicPointDataSetValidator());
-        }
-        System.out.println((double)ok / (runs * numTestSets));
-        System.out.println();
 
-        ok = 0;
-        for(int i = 0; i < runs; i++) {
-            pointDataSetManager = new PointDataSetManager(numSets, pointsPerSet, dim);
-            pointDataSetManagerTest = new PointDataSetManager(numTestSets, pointsPerSet, dim);
-            trainNet(pointDataSetManager, pointDataSetManagerTest, pointsPerSet, new AdvancedPointDataSetValidator());
+        // TESTS
+        for(hidden = 0; hidden <= 17; hidden++) {
+            System.out.println(hidden);
+            time = System.currentTimeMillis();
+            ok = 0;
+            for (int i = 0; i < runs; i++) {
+                pointDataSetManager = new PointDataSetManager(numSets);
+                pointDataSetManagerTest = new PointDataSetManager(numTestSets);
+                trainNet(pointDataSetManager, pointDataSetManagerTest, new BasicHiddenPointDataSetValidator());
+            }
+            System.out.println((double) ok / (runs * numTestSets));
+            //System.out.println();
+
+            ok = 0;
+            for (int i = 0; i < runs; i++) {
+                pointDataSetManager = new PointDataSetManager(numSets);
+                pointDataSetManagerTest = new PointDataSetManager(numTestSets);
+                trainNet(pointDataSetManager, pointDataSetManagerTest, new AdvancedHiddenPointDataSetValidator());
+            }
+            System.out.println((double) ok / (runs * numTestSets));
+            System.out.println(System.currentTimeMillis() - time);
+            System.out.println();
         }
-        System.out.println((double)ok / (runs * numTestSets));
     }
 
-    public static void trainNet(PointDataSetManager pointDataSetManager, PointDataSetManager pointDataSetManagerTest, int pointsPerSet,  PointDataSetValidator validator) throws Exception {
-        NeuralNet net = NetFactory.createFeedForward(new int[]{pointsPerSet*2, 17, validator.supportedNumberOfNeurons()}, false, new boone.map.Function.Sigmoid(), new RpropTrainer(), null, null);
+    public static PointDataSetManager generateAndSave(PointDataSetValidator validator, File f, int numSets) throws IOException {
+        PointDataSetManager pointDataSetManager = new PointDataSetManager(numSets);
 
         PatternSet patterns = new PatternSet();
 
         for (PointDataSet dataSet : pointDataSetManager.getAllDataSets()) {
-            patterns.getInputs().add(Conversion.asList( dataSet.pointsToDoubleArray1D()));
+            patterns.getInputs().add(Conversion.asList( dataSet.pointToDoubleArray()));
             patterns.getTargets().add(Conversion.asList(validator.validatePointDataset(dataSet)));
         }
 
+        patterns.save(f);
 
-/*
-        if( validator instanceof BooneProjekt.BasicPointDataSetValidator) {
-            System.out.println("Saving Dataset to file ");
-            File datasetFile = new File("basicDataset");
-            patterns.save(datasetFile);
+        return pointDataSetManager;
+    }
+
+    public static void trainNet(PointDataSetManager pointDataSetManager, PointDataSetManager pointDataSetManagerTest,  PointDataSetValidator validator) throws Exception {
+        NeuralNet net;
+        if(hidden != 0)
+            net = NetFactory.createFeedForward(new int[]{2, hidden, validator.supportedNumberOfNeurons()}, false, new boone.map.Function.Sigmoid(), new RpropTrainer(), null, null);
+        else
+            net = NetFactory.createFeedForward(new int[]{2, validator.supportedNumberOfNeurons()}, false, new boone.map.Function.Sigmoid(), new RpropTrainer(), null, null);
+
+        PatternSet patterns = new PatternSet();
+
+        for (PointDataSet dataSet : pointDataSetManager.getAllDataSets()) {
+            patterns.getInputs().add(Conversion.asList( dataSet.pointToDoubleArray()));
+            patterns.getTargets().add(Conversion.asList(validator.validatePointDataset(dataSet)));
         }
-
-        } else {
-            System.out.println("Saving Dataset to file ");
-            File datasetFile = new File("advDataset");
-            patterns.save(datasetFile);
-        }
-*/
-
 
 /*
         System.out.println("Loading Dataset from file ");
@@ -100,12 +130,12 @@ public class Main {
 
         PatternSet patternsTest = new PatternSet();
         for (PointDataSet dataSet : pointDataSetManagerTest.getAllDataSets()) {
-            patternsTest.getInputs().add(Conversion.asList( dataSet.pointsToDoubleArray1D()));
+            patternsTest.getInputs().add(Conversion.asList( dataSet.pointToDoubleArray()));
             patternsTest.getTargets().add(Conversion.asList(validator.validatePointDataset(dataSet)));
         }
 
 
-        int steps = 1;
+        int steps = 2;
         int epochs = 500;
         Trainer trainer = net.getTrainer();
         trainer.setTrainingData(patterns);
@@ -138,11 +168,7 @@ public class Main {
         }
 */
         for (PointDataSet dataSet : pointDataSetManagerTest.getAllDataSets()) {
-            if(validator.validatePointDatasetTargets(dataSet) != -1) {
-                if(net.getOutputNeuronIndex(net.getTrainer().getWinningNeuron(Conversion.asList( dataSet.pointsToDoubleArray1D()))) == validator.validatePointDatasetTargets(dataSet))
-                    ok++;
-            }
-            else
+            if(net.getOutputNeuronIndex(net.getTrainer().getWinningNeuron(Conversion.asList( dataSet.pointToDoubleArray()))) == validator.validatePointDatasetTargets(dataSet))
                 ok++;
             // System.out.println(net.getOutputNeuronIndex(net.getTrainer().getWinningNeuron(Conversion.asList( dataSet.pointsToDoubleArray1D()))) + ", " + validator.validatePointDatasetTargets(dataSet));
         }

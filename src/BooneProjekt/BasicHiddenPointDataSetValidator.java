@@ -16,6 +16,8 @@ public class BasicHiddenPointDataSetValidator implements PointDataSetValidator {
         Only look at the tag -> some Datasets (especially random ones) might be wrong classified by the validator
          */
 
+
+
         if(pointDataSet.isCorner())
             return new double[] {1, 0, 0, 0};
         else if (pointDataSet.isSide())
@@ -24,11 +26,22 @@ public class BasicHiddenPointDataSetValidator implements PointDataSetValidator {
             return new double[] {0, 0, 1, 0};
         else
             return new double[] {0, 0, 0, 1};
+
+
     }
 
     @Override
     public int validatePointDatasetTargets(PointDataSet pointDataSet) {
-        return 0;
+        // PointDataSet.PositionTag tag = pointDataSet.getPositionTag();   // Can be used for advanced Subclasses
+
+        if(pointDataSet.isCorner())
+            return 0;
+        else if (pointDataSet.isSide())
+            return 1;
+        else if (pointDataSet.isDiag())
+            return 2;
+        else
+            return 3;
     }
 
 
